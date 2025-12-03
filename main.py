@@ -10,7 +10,7 @@ from numpy.fft import fft, ifft
 #Douglas-Raachfford Projection Operators
 def P_A_ternary(x: np.ndarray) -> np.ndarray:
     """Projection onto the set A (ternary values egg{-1, 0, 1})."""
-    # Simple rounding and clipping
+    # Simple rounding
     return np.clip(np.round(x), -1, 1).astype(np.float64)
 
 
@@ -44,13 +44,12 @@ def P_B_weight_sum(x: np.ndarray, k_sq: int, k: int) -> np.ndarray:
     # Number of sign flips required
     num_flips = abs(diff) // 2
 
-    if diff > 0: # Current sum is too high, flip +1 into -1
+    if diff > 0: # Current sum is too high flip +1 into -1
         plus_indices = np.where(y == 1.0)[0]
         if len(plus_indices) >= num_flips:
             to_flip = np.random.choice(plus_indices, num_flips, replace=False)
             y[to_flip] = -1.0
-        # If not enough +1s, this simple PB fails 
-    elif diff < 0: # Current sum is too low, flip -1 into +1
+    elif diff < 0: # Current sum is too low flip -1 into +1
         minus_indices = np.where(y == -1.0)[0]
         if len(minus_indices) >= num_flips:
             to_flip = np.random.choice(minus_indices, num_flips, replace=False)
@@ -136,7 +135,7 @@ def correlation_vector(a: np.ndarray) -> np.ndarray:
         C[s-1] = c
     return C
 
-#Validation and seeding (Existing Code)
+#Validation and seeding 
 
 @dataclass
 class CWValidationResult:
